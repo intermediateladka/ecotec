@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Internships - ECOTECH SERVICES{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Internship Opportunities</h1>
+        <p class="lead text-muted">Launch your tech career with hands-on experience</p>
+    </div>
+
+    <!-- Internship Benefits -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="text-center mb-4">Why Intern with ECOTECH?</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-project-diagram text-success me-3"></i>
+                                <span>Real-world project experience</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-users text-success me-3"></i>
+                                <span>Mentorship from industry experts</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-certificate text-success me-3"></i>
+                                <span>Certificate of completion</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-briefcase text-success me-3"></i>
+                                <span>Potential full-time opportunities</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Available Positions -->
+    <div class="mb-5">
+        <h2 class="text-center mb-4">Available Positions</h2>
+        <div class="row g-4">
+            {% for position in positions %}
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="card-title fw-bold">{{ position.title }}</h5>
+                            <span class="badge bg-success">{{ position.duration }}</span>
+                        </div>
+                        
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-tag me-2"></i>{{ position.domain }}
+                        </p>
+                        
+                        <p class="card-text mb-3">{{ position.description }}</p>
+                        
+                        <h6 class="fw-bold mb-2">Requirements:</h6>
+                        <ul class="list-unstyled">
+                            {% for req in position.requirements %}
+                            <li class="mb-1">
+                                <i class="fas fa-check text-success me-2"></i>{{ req }}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Application CTA -->
+    <div class="text-center">
+        <div class="bg-gradient-dark text-white rounded p-5">
+            <h3 class="fw-bold mb-3">Ready to Apply?</h3>
+            <p class="lead mb-4">
+                Join our team and gain valuable experience in cutting-edge technologies. 
+                We're looking for passionate students ready to learn and grow.
+            </p>
+            <a href="{{ url_for('main.apply') }}" class="btn btn-success btn-lg">
+                <i class="fas fa-paper-plane me-2"></i>Apply Now
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

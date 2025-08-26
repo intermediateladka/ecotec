@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}Apply for Internship - ECOTECH SERVICES{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold">Internship Application</h1>
+                <p class="lead text-muted">Fill out the form below to apply for our internship program</p>
+            </div>
+
+            <!-- Application Form -->
+            <div class="card border-0 shadow">
+                <div class="card-body p-5">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Personal Information -->
+                        <div class="mb-4">
+                            <h4 class="fw-bold mb-3">
+                                <i class="fas fa-user text-primary me-2"></i>Personal Information
+                            </h4>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    {{ form.name.label(class="form-label fw-bold") }}
+                                    {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else "")) }}
+                                    {% if form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.name.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    {{ form.email.label(class="form-label fw-bold") }}
+                                    {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-12">
+                                    {{ form.phone.label(class="form-label fw-bold") }}
+                                    {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else "")) }}
+                                    {% if form.phone.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.phone.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Academic Information -->
+                        <div class="mb-4">
+                            <h4 class="fw-bold mb-3">
+                                <i class="fas fa-graduation-cap text-info me-2"></i>Academic Information
+                            </h4>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    {{ form.college.label(class="form-label fw-bold") }}
+                                    {{ form.college(class="form-control" + (" is-invalid" if form.college.errors else "")) }}
+                                    {% if form.college.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.college.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    {{ form.course.label(class="form-label fw-bold") }}
+                                    {{ form.course(class="form-control" + (" is-invalid" if form.course.errors else "")) }}
+                                    {% if form.course.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.course.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    {{ form.year_of_study.label(class="form-label fw-bold") }}
+                                    {{ form.year_of_study(class="form-select" + (" is-invalid" if form.year_of_study.errors else "")) }}
+                                    {% if form.year_of_study.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.year_of_study.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    {{ form.internship_type.label(class="form-label fw-bold") }}
+                                    {{ form.internship_type(class="form-select" + (" is-invalid" if form.internship_type.errors else "")) }}
+                                    {% if form.internship_type.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.internship_type.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Documents and Additional Info -->
+                        <div class="mb-4">
+                            <h4 class="fw-bold mb-3">
+                                <i class="fas fa-file-alt text-warning me-2"></i>Documents & Additional Information
+                            </h4>
+                            
+                            <div class="mb-3">
+                                {{ form.resume.label(class="form-label fw-bold") }}
+                                {{ form.resume(class="form-control" + (" is-invalid" if form.resume.errors else "")) }}
+                                {% if form.resume.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.resume.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">Please upload your resume in PDF format (max 16MB)</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.cover_letter.label(class="form-label fw-bold") }}
+                                {{ form.cover_letter(class="form-control" + (" is-invalid" if form.cover_letter.errors else "")) }}
+                                {% if form.cover_letter.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.cover_letter.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="mb-3">
+                                {{ form.skills.label(class="form-label fw-bold") }}
+                                {{ form.skills(class="form-control" + (" is-invalid" if form.skills.errors else "")) }}
+                                {% if form.skills.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.skills.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    {{ form.github_profile.label(class="form-label fw-bold") }}
+                                    {{ form.github_profile(class="form-control" + (" is-invalid" if form.github_profile.errors else "")) }}
+                                    {% if form.github_profile.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.github_profile.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    {{ form.linkedin_profile.label(class="form-label fw-bold") }}
+                                    {{ form.linkedin_profile(class="form-control" + (" is-invalid" if form.linkedin_profile.errors else "")) }}
+                                    {% if form.linkedin_profile.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.linkedin_profile.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            {{ form.submit(class="btn btn-success btn-lg px-5") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

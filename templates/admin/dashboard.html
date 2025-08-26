@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - ECOTECH SERVICES{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Dashboard Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Admin Dashboard</h1>
+            <p class="text-muted mb-0">Welcome back, {{ current_user.username }}!</p>
+        </div>
+        <div>
+            <span class="badge bg-success fs-6">Online</span>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-alt fa-3x text-primary mb-3"></i>
+                    <h3 class="fw-bold text-primary">{{ stats.total }}</h3>
+                    <p class="text-muted mb-0">Total Applications</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                    <h3 class="fw-bold text-warning">{{ stats.pending }}</h3>
+                    <p class="text-muted mb-0">Pending Review</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h3 class="fw-bold text-success">{{ stats.accepted }}</h3>
+                    <p class="text-muted mb-0">Accepted</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-eye fa-3x text-info mb-3"></i>
+                    <h3 class="fw-bold text-info">{{ stats.reviewed }}</h3>
+                    <p class="text-muted mb-0">Under Review</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Applications by Domain -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 pb-0">
+                    <h5 class="fw-bold">Applications by Domain</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="domainChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Status -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 pb-0">
+                    <h5 class="fw-bold">Application Status</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="statusChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Applications -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0">Recent Applications</h5>
+                    <a href="{{ url_for('admin.applications') }}" class="btn btn-outline-primary btn-sm">
+                        View All <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    {% if recent_applications %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Domain</th>
+                                        <th>College</th>
+                                        <th>Status</th>
+                                        <th>Applied</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for app in recent_applications %}
+                                    <tr>
+                                        <td class="fw-bold">{{ app.name }}</td>
+                                        <td>{{ app.email }}</td>
+                                        <td>
+                                            <span class="badge bg-secondary">{{ app.internship_type }}</span>
+                                        </td>
+                                        <td>{{ app.college[:30] }}{% if app.college|length > 30 %}...{% endif %}</td>
+                                        <td>
+                                            {% if app.status == 'pending' %}
+                                                <span class="badge bg-warning">Pending</span>
+                                            {% elif app.status == 'reviewed' %}
+                                                <span class="badge bg-info">Reviewed</span>
+                                            {% elif app.status == 'accepted' %}
+                                                <span class="badge bg-success">Accepted</span>
+                                            {% elif app.status == 'rejected' %}
+                                                <span class="badge bg-danger">Rejected</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ app.applied_at.strftime('%m/%d/%Y') }}</td>
+                                        <td>
+                                            <a href="{{ url_for('admin.view_application', id=app.id) }}" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No applications yet</h5>
+                            <p class="text-muted">Applications will appear here once students start applying.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Domain Chart
+const domainCtx = document.getElementById('domainChart').getContext('2d');
+new Chart(domainCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['IT Solutions', 'IoT Development', 'AI & ML'],
+        datasets: [{
+            data: [{{ stats.it }}, {{ stats.iot }}, {{ stats.ai }}],
+            backgroundColor: ['#0d6efd', '#17a2b8', '#ffc107'],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// Status Chart
+const statusCtx = document.getElementById('statusChart').getContext('2d');
+new Chart(statusCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Pending', 'Reviewed', 'Accepted', 'Rejected'],
+        datasets: [{
+            data: [{{ stats.pending }}, {{ stats.reviewed }}, {{ stats.accepted }}, {{ stats.rejected }}],
+            backgroundColor: ['#ffc107', '#17a2b8', '#198754', '#dc3545'],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

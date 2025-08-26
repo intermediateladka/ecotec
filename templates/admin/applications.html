@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Applications - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Internship Applications</h1>
+            <p class="text-muted mb-0">Manage and review student applications</p>
+        </div>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Filters -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Status Filter</label>
+                    <select name="status" class="form-select">
+                        <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Status</option>
+                        <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="reviewed" {% if status_filter == 'reviewed' %}selected{% endif %}>Reviewed</option>
+                        <option value="accepted" {% if status_filter == 'accepted' %}selected{% endif %}>Accepted</option>
+                        <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Domain Filter</label>
+                    <select name="type" class="form-select">
+                        <option value="all" {% if type_filter == 'all' %}selected{% endif %}>All Domains</option>
+                        <option value="IT Solutions" {% if type_filter == 'IT Solutions' %}selected{% endif %}>IT Solutions</option>
+                        <option value="IoT Development" {% if type_filter == 'IoT Development' %}selected{% endif %}>IoT Development</option>
+                        <option value="AI & Machine Learning" {% if type_filter == 'AI & Machine Learning' %}selected{% endif %}>AI & ML</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Search</label>
+                    <input type="text" name="search" class="form-control" 
+                           placeholder="Search by name, email, or college..." 
+                           value="{{ search }}">
+                </div>
+                
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i>Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            {% if applications.items %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Domain</th>
+                                <th>College</th>
+                                <th>Year</th>
+                                <th>Status</th>
+                                <th>Applied</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in applications.items %}
+                            <tr>
+                                <td class="fw-bold">{{ app.name }}</td>
+                                <td>{{ app.email }}</td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ app.internship_type }}</span>
+                                </td>
+                                <td>{{ app.college[:25] }}{% if app.college|length > 25 %}...{% endif %}</td>
+                                <td>{{ app.year_of_study }}</td>
+                                <td>
+                                    {% if app.status == 'pending' %}
+                                        <span class="badge bg-warning">Pending</span>
+                                    {% elif app.status == 'reviewed' %}
+                                        <span class="badge bg-info">Reviewed</span>
+                                    {% elif app.status == 'accepted' %}
+                                        <span class="badge bg-success">Accepted</span>
+                                    {% elif app.status == 'rejected' %}
+                                        <span class="badge bg-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ app.applied_at.strftime('%m/%d/%Y') }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{{ url_for('admin.view_application', id=app.id) }}" 
+                                           class="btn btn-sm btn-outline-primary" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        {% if app.resume_filename %}
+                                        <a href="{{ url_for('admin.download_resume', id=app.id) }}" 
+                                           class="btn btn-sm btn-outline-success" title="Download Resume">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                {% if applications.pages > 1 %}
+                <div class="card-footer bg-transparent">
+                    <nav aria-label="Applications pagination">
+                        <ul class="pagination justify-content-center mb-0">
+                            {% if applications.has_prev %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('admin.applications', page=applications.prev_num, status=status_filter, type=type_filter, search=search) }}">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for page_num in applications.iter_pages() %}
+                                {% if page_num %}
+                                    {% if page_num != applications.page %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ url_for('admin.applications', page=page_num, status=status_filter, type=type_filter, search=search) }}">
+                                                {{ page_num }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ page_num }}</span>
+                                        </li>
+                                    {% endif %}
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if applications.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('admin.applications', page=applications.next_num, status=status_filter, type=type_filter, search=search) }}">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">No applications found</h5>
+                    <p class="text-muted">Try adjusting your filters or search criteria.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

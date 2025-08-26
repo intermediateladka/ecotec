@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Services - ECOTECH SERVICES{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Our Services</h1>
+        <p class="lead text-muted">Comprehensive technology solutions for modern businesses</p>
+    </div>
+
+    <!-- IT Solutions -->
+    <section id="it-solutions" class="mb-5">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h2 class="fw-bold text-primary">
+                    <i class="fas fa-laptop-code me-3"></i>IT Solutions
+                </h2>
+                <p class="lead text-muted">Custom software development and IT infrastructure services</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for service in services.it_solutions %}
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start">
+                            <div class="service-icon me-3">
+                                <i class="{{ service.icon }} fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">{{ service.title }}</h5>
+                                <p class="card-text text-muted">{{ service.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- IoT Solutions -->
+    <section id="iot-solutions" class="mb-5">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h2 class="fw-bold text-info">
+                    <i class="fas fa-wifi me-3"></i>IoT Development
+                </h2>
+                <p class="lead text-muted">Internet of Things solutions for smart connectivity</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for service in services.iot_solutions %}
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start">
+                            <div class="service-icon me-3">
+                                <i class="{{ service.icon }} fa-2x text-info"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">{{ service.title }}</h5>
+                                <p class="card-text text-muted">{{ service.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- AI Solutions -->
+    <section id="ai-solutions" class="mb-5">
+        <div class="row align-items-center mb-4">
+            <div class="col">
+                <h2 class="fw-bold text-warning">
+                    <i class="fas fa-brain me-3"></i>AI & Machine Learning
+                </h2>
+                <p class="lead text-muted">Artificial intelligence and data science solutions</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            {% for service in services.ai_solutions %}
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start">
+                            <div class="service-icon me-3">
+                                <i class="{{ service.icon }} fa-2x text-warning"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">{{ service.title }}</h5>
+                                <p class="card-text text-muted">{{ service.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bg-dark text-light rounded p-5 text-center">
+        <h3 class="fw-bold mb-3">Ready to Transform Your Business?</h3>
+        <p class="lead mb-4">Let's discuss how our technology solutions can help you achieve your goals.</p>
+        <a href="{{ url_for('main.contact') }}" class="btn btn-success btn-lg">
+            <i class="fas fa-phone me-2"></i>Contact Us Today
+        </a>
+    </section>
+</div>
+{% endblock %}

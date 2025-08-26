@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - ECOTECH SERVICES{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Contact Us</h1>
+        <p class="lead text-muted">Get in touch with our team for your technology needs</p>
+    </div>
+
+    <div class="row g-5">
+        <!-- Contact Information -->
+        <div class="col-lg-6">
+            <h2 class="fw-bold mb-4">Get In Touch</h2>
+            <p class="lead text-muted mb-4">
+                Ready to transform your business with innovative technology solutions? 
+                We'd love to hear from you and discuss how we can help.
+            </p>
+
+            <!-- Contact Details -->
+            <div class="contact-info">
+                <div class="contact-item mb-4">
+                    <div class="d-flex align-items-start">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold">Office Address</h5>
+                            <p class="text-muted mb-0">
+                                Tech Innovation Hub<br>
+                                123 Technology Drive, Suite 456<br>
+                                Innovation City, IC 12345
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item mb-4">
+                    <div class="d-flex align-items-start">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-phone fa-2x text-success"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold">Phone Numbers</h5>
+                            <p class="text-muted mb-1">Main: +1 (555) 123-4567</p>
+                            <p class="text-muted mb-0">Support: +1 (555) 123-4568</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item mb-4">
+                    <div class="d-flex align-items-start">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-envelope fa-2x text-info"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold">Email Addresses</h5>
+                            <p class="text-muted mb-1">General: info@ecotechservices.com</p>
+                            <p class="text-muted mb-1">Sales: sales@ecotechservices.com</p>
+                            <p class="text-muted mb-0">Support: support@ecotechservices.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-item mb-4">
+                    <div class="d-flex align-items-start">
+                        <div class="contact-icon me-3">
+                            <i class="fas fa-clock fa-2x text-warning"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold">Business Hours</h5>
+                            <p class="text-muted mb-1">Monday - Friday: 9:00 AM - 6:00 PM</p>
+                            <p class="text-muted mb-1">Saturday: 10:00 AM - 4:00 PM</p>
+                            <p class="text-muted mb-0">Sunday: Closed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="social-links mt-4">
+                <h5 class="fw-bold mb-3">Follow Us</h5>
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-outline-primary btn-lg">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-info btn-lg">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-dark btn-lg">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-danger btn-lg">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow">
+                <div class="card-body p-4">
+                    <h3 class="fw-bold mb-4">Send Us a Message</h3>
+                    
+                    <form action="{{ url_for('main.contact') }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">First Name</label>
+                                <input type="text" name="first_name" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Email Address</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Phone Number</label>
+                                <input type="tel" name="phone" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Service Interest</label>
+                                <select name="service" class="form-select">
+                                    <option value="">Select a service...</option>
+                                    <option value="it">IT Solutions</option>
+                                    <option value="iot">IoT Development</option>
+                                    <option value="ai">AI & Machine Learning</option>
+                                    <option value="consulting">Technology Consulting</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Message</label>
+                                <textarea name="message" class="form-control" rows="5" placeholder="Tell us about your project or requirements..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success btn-lg w-100">
+                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <!-- <div class="mt-5">
+        <div class="card border-0 shadow">
+            <div class="card-body p-0">
+                <div class="bg-light p-4 text-center">
+                    <h4 class="fw-bold mb-2">Visit Our Office</h4>
+                    <p class="text-muted mb-0">Located in the heart of the technology district</p>
+                </div>
+                <div class="map-placeholder bg-secondary d-flex align-items-center justify-content-center" style="height: 300px;">
+                    <div class="text-center text-white">
+                        <i class="fas fa-map-marker-alt fa-3x mb-3"></i>
+                        <h5>Interactive Map</h5>
+                        <p>Google Maps integration would go here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+</div>
+{% endblock %}

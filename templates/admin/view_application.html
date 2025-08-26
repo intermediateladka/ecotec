@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}View Application - {{ application.name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Application Details</h1>
+            <p class="text-muted mb-0">{{ application.name }} - {{ application.internship_type }}</p>
+        </div>
+        <a href="{{ url_for('admin.applications') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Applications
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Application Details -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-user me-2"></i>Applicant Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <!-- Personal Info -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-primary mb-3">Personal Details</h6>
+                            <div class="info-item mb-2">
+                                <strong>Full Name:</strong> {{ application.name }}
+                            </div>
+                            <div class="info-item mb-2">
+                                <strong>Email:</strong> 
+                                <a href="mailto:{{ application.email }}">{{ application.email }}</a>
+                            </div>
+                            {% if application.phone %}
+                            <div class="info-item mb-2">
+                                <strong>Phone:</strong> 
+                                <a href="tel:{{ application.phone }}">{{ application.phone }}</a>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Academic Info -->
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-info mb-3">Academic Details</h6>
+                            <div class="info-item mb-2">
+                                <strong>College:</strong> {{ application.college }}
+                            </div>
+                            <div class="info-item mb-2">
+                                <strong>Course:</strong> {{ application.course }}
+                            </div>
+                            <div class="info-item mb-2">
+                                <strong>Year of Study:</strong> {{ application.year_of_study }}
+                            </div>
+                        </div>
+
+                        <!-- Internship Info -->
+                        <div class="col-12">
+                            <h6 class="fw-bold text-warning mb-3">Internship Details</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item mb-2">
+                                        <strong>Domain:</strong> 
+                                        <span class="badge bg-secondary">{{ application.internship_type }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item mb-2">
+                                        <strong>Applied On:</strong> {{ application.applied_at.strftime('%B %d, %Y at %I:%M %p') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills -->
+                        {% if application.skills %}
+                        <div class="col-12">
+                            <h6 class="fw-bold text-success mb-3">Technical Skills</h6>
+                            <p class="text-muted">{{ application.skills }}</p>
+                        </div>
+                        {% endif %}
+
+                        <!-- Cover Letter -->
+                        {% if application.cover_letter %}
+                        <div class="col-12">
+                            <h6 class="fw-bold text-primary mb-3">Cover Letter</h6>
+                            <div class="bg-light p-3 rounded">
+                                <p class="mb-0">{{ application.cover_letter }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Social Profiles -->
+                        {% if application.github_profile or application.linkedin_profile %}
+                        <div class="col-12">
+                            <h6 class="fw-bold text-info mb-3">Social Profiles</h6>
+                            <div class="d-flex gap-3">
+                                {% if application.github_profile %}
+                                <a href="{{ application.github_profile }}" target="_blank" class="btn btn-outline-dark">
+                                    <i class="fab fa-github me-2"></i>GitHub
+                                </a>
+                                {% endif %}
+                                {% if application.linkedin_profile %}
+                                <a href="{{ application.linkedin_profile }}" target="_blank" class="btn btn-outline-primary">
+                                    <i class="fab fa-linkedin me-2"></i>LinkedIn
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Resume -->
+                        {% if application.resume_filename %}
+                        <div class="col-12">
+                            <h6 class="fw-bold text-danger mb-3">Resume</h6>
+                            <a href="{{ url_for('admin.download_resume', id=application.id) }}" 
+                               class="btn btn-outline-success">
+                                <i class="fas fa-download me-2"></i>Download Resume
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Management -->
+        <div class="col-lg-4">
+            <!-- Current Status -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-transparent border-0">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-flag me-2"></i>Application Status
+                    </h5>
+                </div>
+                <div class="card-body text-center">
+                    {% if application.status == 'pending' %}
+                        <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                        <h4 class="text-warning">Pending Review</h4>
+                    {% elif application.status == 'reviewed' %}
+                        <i class="fas fa-eye fa-3x text-info mb-3"></i>
+                        <h4 class="text-info">Under Review</h4>
+                    {% elif application.status == 'accepted' %}
+                        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                        <h4 class="text-success">Accepted</h4>
+                    {% elif application.status == 'rejected' %}
+                        <i class="fas fa-times-circle fa-3x text-danger mb-3"></i>
+                        <h4 class="text-danger">Rejected</h4>
+                    {% endif %}
+                    
+                    {% if application.reviewed_at %}
+                    <p class="text-muted mb-0">
+                        Last updated: {{ application.reviewed_at.strftime('%m/%d/%Y') }}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Update Status Form -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-edit me-2"></i>Update Status
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('admin.update_application', id=application.id) }}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.status.label(class="form-label fw-bold") }}
+                            {{ form.status(class="form-select") }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.notes.label(class="form-label fw-bold") }}
+                            {{ form.notes(class="form-control", placeholder="Add notes about this application...") }}
+                        </div>
+
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Admin Notes -->
+            {% if application.notes %}
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-transparent border-0">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-sticky-note me-2"></i>Admin Notes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">{{ application.notes }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
